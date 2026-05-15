@@ -43,7 +43,7 @@ const Hero = () => {
     const urls = [];
     for (let i = 1; i <= frameCount; i++) {
       const num = i.toString().padStart(3, '0');
-      urls.push(`/image/hero-section/ezgif-frame-${num}.png`);
+      urls.push(`/image/hero-section/ezgif-frame-${num}.webp`);
     }
     return urls;
   }, [frameCount]);
