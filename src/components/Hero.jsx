@@ -6,6 +6,8 @@ const Hero = () => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const [images, setImages] = useState([]);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const frameCount = 240;
 
   // Track scroll progress of the hero section
@@ -46,16 +48,32 @@ const Hero = () => {
     return urls;
   }, [frameCount]);
 
-  // Preload images
+  // Preload images with progress tracking
   useEffect(() => {
-    const preloadImages = () => {
-      const loadedImages = [];
-      imageUrls.forEach((src) => {
-        const img = new Image();
-        img.src = src;
-        loadedImages.push(img);
+    let loadedCount = 0;
+    const loadedImages = [];
+
+    const preloadImages = async () => {
+      const loadPromises = imageUrls.map((src, index) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            loadedCount++;
+            setLoadingProgress(Math.floor((loadedCount / frameCount) * 100));
+            loadedImages[index] = img;
+            resolve();
+          };
+          img.onerror = () => {
+            loadedCount++;
+            resolve(); // Still resolve to not hang
+          };
+        });
       });
+
+      await Promise.all(loadPromises);
       setImages(loadedImages);
+      setIsLoaded(true);
     };
 
     preloadImages();
@@ -69,7 +87,6 @@ const Hero = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
         
-        // Handle responsive canvas sizing
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -92,7 +109,6 @@ const Hero = () => {
     const unsubscribe = currentIndex.on("change", render);
     window.addEventListener('resize', render);
     
-    // Initial render
     if (images.length > 0) render();
 
     return () => {
@@ -102,21 +118,20 @@ const Hero = () => {
   }, [images, currentIndex]);
 
   useEffect(() => {
+    if (!isLoaded) return; // Only start auto-scroll after load
+    
     let animationFrameId;
     let isUserInteracting = false;
 
     const handleUserInteraction = () => {
       isUserInteracting = true;
       cancelAnimationFrame(animationFrameId);
-      document.documentElement.style.scrollBehavior = 'smooth'; // Restore
+      document.documentElement.style.scrollBehavior = 'smooth';
     };
 
     const timer = setTimeout(() => {
       if (isUserInteracting) return;
-
-      // Disable CSS smooth scroll during programmatic scroll to prevent conflicts
       document.documentElement.style.scrollBehavior = 'auto';
-
       const duration = 18000; 
       const start = window.scrollY;
       const end = window.innerHeight * 5; 
@@ -124,34 +139,48 @@ const Hero = () => {
 
       const autoScroll = (currentTime) => {
         if (isUserInteracting) return;
-
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const ease = 1 - Math.pow(1 - progress, 2);
-        
         const nextScroll = start + (end - start) * ease;
         window.scrollTo(0, nextScroll);
-
         if (progress < 1) {
           animationFrameId = requestAnimationFrame(autoScroll);
         } else {
-          document.documentElement.style.scrollBehavior = 'smooth'; // Restore
+          document.documentElement.style.scrollBehavior = 'smooth';
         }
       };
 
       window.addEventListener('wheel', handleUserInteraction, { once: true });
       window.addEventListener('touchmove', handleUserInteraction, { once: true });
       window.addEventListener('mousedown', handleUserInteraction, { once: true });
-      
       animationFrameId = requestAnimationFrame(autoScroll);
-    }, 3000);
+    }, 4000);
 
     return () => {
       clearTimeout(timer);
       cancelAnimationFrame(animationFrameId);
       document.documentElement.style.scrollBehavior = 'smooth';
     };
-  }, []);
+  }, [isLoaded]);
+
+  if (!isLoaded) {
+    return (
+      <div className="hero-loading">
+        <div className="loading-content">
+          <div className="loading-logo">Arvanta Governance</div>
+          <div className="loading-bar-container">
+            <motion.div 
+              className="loading-bar" 
+              initial={{ width: 0 }}
+              animate={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+          <div className="loading-text uppercase">Architecting Institutional Systems... {loadingProgress}%</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="hero-scroll-container">
