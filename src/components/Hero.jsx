@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence, animate } from 'framer-motion';
 import './Hero.css';
 
 const Hero = () => {
@@ -66,7 +66,7 @@ const Hero = () => {
           };
           img.onerror = () => {
             loadedCount++;
-            resolve(); // Still resolve to not hang
+            resolve(); 
           };
         });
       });
@@ -108,7 +108,6 @@ const Hero = () => {
 
     const unsubscribe = currentIndex.on("change", render);
     window.addEventListener('resize', render);
-    
     if (images.length > 0) render();
 
     return () => {
@@ -118,7 +117,7 @@ const Hero = () => {
   }, [images, currentIndex]);
 
   useEffect(() => {
-    if (!isLoaded) return; // Only start auto-scroll after load
+    if (!isLoaded) return;
     
     let animationFrameId;
     let isUserInteracting = false;
@@ -164,26 +163,31 @@ const Hero = () => {
     };
   }, [isLoaded]);
 
-  if (!isLoaded) {
-    return (
-      <div className="hero-loading">
-        <div className="loading-content">
-          <div className="loading-logo">Arvanta Governance</div>
-          <div className="loading-bar-container">
-            <motion.div 
-              className="loading-bar" 
-              initial={{ width: 0 }}
-              animate={{ width: `${loadingProgress}%` }}
-            />
-          </div>
-          <div className="loading-text uppercase">Architecting Institutional Systems... {loadingProgress}%</div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div ref={containerRef} className="hero-scroll-container">
+      <AnimatePresence>
+        {!isLoaded && (
+          <motion.div 
+            key="loader"
+            className="hero-loading"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+          >
+            <div className="loading-content">
+              <div className="loading-logo">Arvanta Governance</div>
+              <div className="loading-bar-container">
+                <motion.div 
+                  className="loading-bar" 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${loadingProgress}%` }}
+                />
+              </div>
+              <div className="loading-text uppercase">Architecting Institutional Systems... {loadingProgress}%</div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="sticky-wrapper">
         <canvas ref={canvasRef} className="hero-canvas" />
         <div className="hero-gradient-overlay" />
@@ -199,7 +203,6 @@ const Hero = () => {
         </div>
 
         <div className="hero-overlay">
-          {/* Segment 1: Intro - Centered */}
           <motion.div style={{ opacity: opacity1, y: y1 }} className="hero-text-block text-center">
             <h1 className="hero-main-title uppercase">
               Transforming <br />
@@ -209,21 +212,18 @@ const Hero = () => {
             <p className="hero-subtitle mt-8">Architecting the future of public systems through <br />precision design and empirical research.</p>
           </motion.div>
 
-          {/* Segment 2: Diagnostic Research - Top Left */}
           <motion.div style={{ opacity: opacity2, y: y2 }} className="hero-text-block pos-top-left">
             <div className="feature-tag">01 · Diagnostic Research</div>
             <h2 className="hero-feature-title">EVIDENCE-DRIVEN <br />FOUNDATIONS</h2>
             <p className="hero-feature-subtitle">We deploy deep-dive analytics to identify and solve <br />the most complex structural bottlenecks.</p>
           </motion.div>
 
-          {/* Segment 3: Strategic Design - Bottom Left */}
           <motion.div style={{ opacity: opacity3, y: y3 }} className="hero-text-block pos-bottom-left">
             <div className="feature-tag">02 · Strategic Design</div>
             <h2 className="hero-feature-title">ARCHITECTING <br />INSTITUTIONS</h2>
             <p className="hero-feature-subtitle">Designing next-generation operational models <br />that redefine accountability and performance.</p>
           </motion.div>
 
-          {/* Segment 4: Final Message - Centered & Permanent */}
           <motion.div style={{ opacity: opacity4, y: y4 }} className="hero-text-block text-center">
             <h1 className="hero-main-title uppercase">
               Transforming <br />
