@@ -1,0 +1,83 @@
+.trust-strip {
+  padding: 5rem 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.trust-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.trust-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.marquee-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Fades on the edges for a cinematic look */
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff, transparent);
+}
+
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  gap: 6rem;
+  white-space: nowrap;
+  padding-left: 3rem;
+}
+
+.partner-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  opacity: 0.25;
+  transition: var(--transition-smooth);
+  cursor: default;
+}
+
+.partner-logo:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .marquee-content {
+    gap: 4rem;
+  }
+  
+  .partner-logo {
+    font-size: 1.25rem;
+  }
+}

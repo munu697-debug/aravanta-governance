@@ -1,0 +1,57 @@
+.impact {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+}
+
+.impact-statement {
+  max-width: 900px;
+  margin: 0 auto 6rem auto;
+  color: white;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  gap: 6rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  gap: 1rem;
+}
+
+.stat-icon {
+  color: var(--highlight-color);
+  margin-bottom: 1rem;
+}
+
+.stat-value {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .impact {
+    padding: 6rem 2rem;
+  }
+  
+  .stats-grid {
+    gap: 4rem;
+    flex-direction: column;
+  }
+  
+  .stat-value {
+    font-size: 3rem;
+  }
+}

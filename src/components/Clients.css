@@ -1,0 +1,30 @@
+.clients h2 {
+  margin-bottom: 4rem;
+  color: var(--text-secondary);
+}
+
+.clients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.client-logo {
+  filter: grayscale(100%);
+  opacity: 0.5;
+  transition: var(--transition-smooth);
+}
+
+.client-logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.logo-placeholder {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

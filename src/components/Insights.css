@@ -1,0 +1,54 @@
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.insight-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+}
+
+.insight-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.insight-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.insight-type {
+  font-weight: 600;
+  color: var(--primary-color);
+  text-transform: uppercase;
+}
+
+.insight-title {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.read-more {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.read-more:hover {
+  gap: 1rem;
+}

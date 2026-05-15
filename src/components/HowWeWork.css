@@ -1,0 +1,57 @@
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.timeline-step {
+  display: flex;
+  gap: 3rem;
+  position: relative;
+  padding-bottom: 4rem;
+}
+
+.step-number {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.step-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.step-connector {
+  position: absolute;
+  left: 25px;
+  top: 50px;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--border-color);
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  .timeline-step {
+    gap: 1.5rem;
+  }
+  
+  .step-content h3 {
+    font-size: 1.25rem;
+  }
+}
