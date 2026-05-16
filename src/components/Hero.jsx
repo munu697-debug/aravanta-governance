@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence, animate } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, animate } from 'framer-motion';
 import './Hero.css';
 
 const Hero = () => {
@@ -165,29 +165,6 @@ const Hero = () => {
 
   return (
     <div ref={containerRef} className="hero-scroll-container">
-      <AnimatePresence>
-        {!isLoaded && (
-          <motion.div 
-            key="loader"
-            className="hero-loading"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          >
-            <div className="loading-content">
-              <div className="loading-logo">Arvanta Governance</div>
-              <div className="loading-bar-container">
-                <motion.div 
-                  className="loading-bar" 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${loadingProgress}%` }}
-                />
-              </div>
-              <div className="loading-text uppercase">Architecting Institutional Systems... {loadingProgress}%</div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="sticky-wrapper">
         <canvas ref={canvasRef} className="hero-canvas" />
         <div className="hero-gradient-overlay" />
